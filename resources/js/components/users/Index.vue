@@ -10,6 +10,8 @@
                     :user="user"
                     :key="user.id"
                    />
+
+                   <pagination :meta="meta" v-on:pagination:switched="getUsers"></pagination>
                 </div>
             </div>
         </div>
@@ -18,21 +20,35 @@
 
 <script>
     import User from './partials/User'
+    import Pagination from '../pagination/Pagination'
 
     export default {
         components: {
-            User
+            User,
+            Pagination
         },
         data() {
             return {
-                users: []
+                users: [],
+                meta: {}
             }
         },
 
         mounted() {
-            axios.get('/api/users').then((res) => {
-                this.users = res.data.data
-            })
+            this.getUsers()
+        },
+
+        methods: {
+            getUsers(page = 1) {
+                axios.get('/api/users', {
+                    params: {
+                        page
+                    }
+                }).then((res) => {
+                    this.users = res.data.data
+                    this.meta = res.data.meta
+                })
+            }
         }
     }
 </script>
