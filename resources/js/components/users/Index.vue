@@ -11,7 +11,7 @@
                     :key="user.id"
                    />
 
-                   <pagination :meta="meta" v-on:pagination:switched="getUsers"></pagination>
+                   <pagination v-if="meta.current_page" :meta="meta" v-on:pagination:switched="switchPage"></pagination>
                 </div>
             </div>
         </div>
@@ -34,12 +34,18 @@
             }
         },
 
+        watch: {
+            '$route.query' (query) {
+                this.getUsers(query.page)
+            }
+        },
+
         mounted() {
             this.getUsers()
         },
 
         methods: {
-            getUsers(page = 1) {
+            getUsers(page = this.$route.query.page) {
                 axios.get('/api/users', {
                     params: {
                         page
@@ -47,6 +53,15 @@
                 }).then((res) => {
                     this.users = res.data.data
                     this.meta = res.data.meta
+                })
+            },
+
+            switchPage(page) {
+                this.$router.replace({
+                    name: 'user.index',
+                    query: {
+                        page
+                    }
                 })
             }
         }

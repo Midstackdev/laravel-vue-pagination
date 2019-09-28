@@ -72,7 +72,12 @@
             </div>
         </nav>
 
+        
+
         <main class="py-4">
+            <div class="container">
+                <router-view></router-view>
+            </div>
             @yield('content')
         </main>
     </div>

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('content')
+{{-- @section('content')
     <div class="container">
 
         <users-index></users-index>
     </div>
 
-@endsection
+@endsection --}}
